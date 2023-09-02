@@ -8,13 +8,26 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-#include <zephyr.h>
-#include <display/cfb.h>
+#include <zephyr/types.h>
+#include <stddef.h>
+#include <string.h>
+#include <errno.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/sys/byteorder.h>
+#include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
+#include <soc.h>
+
+#include <zephyr/device.h>
+#include <zephyr/display/cfb.h>
+#include <stdio.h>
+
+#include <zephyr/logging/log.h>
 
 #define CFB_FONTS_FIRST_CHAR    32
 #define CFB_FONTS_LAST_CHAR     126
 
-const u8_t cfb_font20x32 [95][80] = {
+const uint8_t cfb_font20x32 [95][80] = {
     /*   */
     {
         0x00, 0x00, 0x00, 0x00,

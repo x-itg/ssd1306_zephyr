@@ -1,0 +1,39 @@
+// To get started, press Ctrl+Space to bring up the completion menu and view the available nodes.
+
+// You can also use the buttons in the sidebar to perform actions on nodes.
+// Actions currently available include:
+
+// * Enabling / disabling the node
+// * Adding the bus to a bus
+// * Removing the node
+// * Connecting ADC channels
+
+// For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
+// You can also visit the nRF DeviceTree extension documentation at https://nrfconnect.github.io/vscode-nrf-connect/devicetree/nrfdevicetree.html
+/*
+ * Copyright (c) 2019 Callender-Consulting, LLC
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+ &i2c0 {
+	compatible = "nordic,nrf-twi";
+	status = "okay";
+	clock-frequency = <I2C_BITRATE_FAST>;
+
+    ssd1306@3C {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3C>;
+        label = "SSD1306";
+        height = <32>;
+        width  = <128>;
+        segment-offset  = <0>;
+        page-offset     = <0>;
+        display-offset  = <0>;
+        multiplex-ratio = <31>;
+        prechargep      = <0xD1>;
+        segment-remap;
+        com-invdir;
+        com-sequential;
+    };
+};

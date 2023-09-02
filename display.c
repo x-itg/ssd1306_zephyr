@@ -3,21 +3,30 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-#include <zephyr.h>
-#include <device.h>
-#include <display/cfb.h>
+#include <zephyr/types.h>
+#include <stddef.h>
+#include <string.h>
+#include <errno.h>
+#include <zephyr/sys/printk.h>
+#include <zephyr/sys/byteorder.h>
+#include <zephyr/kernel.h>
+#include <zephyr/drivers/gpio.h>
+#include <soc.h>
+
+#include <zephyr/device.h>
+#include <zephyr/display/cfb.h>
 #include <stdio.h>
 
-#include <logging/log.h>
+#include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(display, 3);
 
-#define DISPLAY_DRIVER      DT_INST_0_SOLOMON_SSD1306FB_LABEL
+#define DISPLAY_DRIVER      "SSD1306"
 
 static struct device *dev;
-static u16_t rows;
-static u8_t ppt;
-static u8_t font_width;
-static u8_t font_height;
+static uint16_t rows;
+static uint8_t ppt;
+static uint8_t font_width;
+static uint8_t font_height;
 
 #define SELECTED_FONT_INDEX  4  // perhaps make this a config parameter
 
@@ -26,8 +35,8 @@ static u8_t font_height;
 /*---------------------------------------------------------------------------*/
 void display_play(void)
 {
-    u8_t x_offset = 0;
-    u8_t y_offset;
+    uint8_t x_offset = 0;
+    uint8_t y_offset;
 
     while (1) {
 
