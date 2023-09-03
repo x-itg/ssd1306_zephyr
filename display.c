@@ -27,8 +27,12 @@ static uint16_t rows;
 static uint8_t ppt;
 static uint8_t font_width;
 static uint8_t font_height;
-
-#define SELECTED_FONT_INDEX  4  // perhaps make this a config parameter
+//0：font10x16 zephyr-copy
+//1：font15x24 zephyr-copy
+//2：font20x32 zephyr-copy
+//3：font5x7 custom
+//4：font8x8 custom
+#define SELECTED_FONT_INDEX  0 // perhaps make this a config parameter
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -42,7 +46,7 @@ void display_play(void)
 
         for (int i=0; i < rows; i++) {
 
-            y_offset = i * ppt;
+            y_offset = i * 16;//ppt;
 
             switch (i) {
                 case 0:
@@ -110,7 +114,7 @@ void display_init(void)
 
     for (int idx = 0; idx < num_fonts; idx++) {
 
-        cfb_get_font_size(dev, idx, &font_width, &font_height);
+        cfb_get_font_size(dev, idx, &font_width, &font_height);//取得字体的宽度和高度
 
         LOG_INF("Index[%d] font dimensions %2dx%d",
                 idx, font_width, font_height);

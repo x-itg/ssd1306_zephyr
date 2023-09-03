@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "cfb.h": "c",
+        "display.h": "c"
+    }
+}
