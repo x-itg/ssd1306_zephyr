@@ -1,11 +1,12 @@
 ### 访问Github的办法
 
 * ssh -N -D 127.0.0.1:8080 ubuntu@172.16.1.215    （外面的IP）
-* git config --global https.proxy "socks5://127.0.0.1:8080"   
+* git config --global https.proxy "socks5://127.0.0.1:8080"
 * git config --global https.proxy "socks5://127.0.0.1:8080"
 * ```取消
   git config --global --unset http.proxy
   git config --global --unset https.proxy
+  git config --list
   ```
 * sdk文件夹中git clone nrf sdk，文件名为nrf
 * sdk文件夹下运行west update导入其他仓库
