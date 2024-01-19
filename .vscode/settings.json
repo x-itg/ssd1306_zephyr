@@ -3,5 +3,6 @@
         "cfb.h": "c",
         "display.h": "c"
     },
-    "idf.portWin": "COM3"
+    "idf.portWin": "COM3",
+    "nrf-connect.topdir": "${nrf-connect.sdk:2.5.1}"
 }

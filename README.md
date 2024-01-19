@@ -1,3 +1,10 @@
+### 访问Github的办法
+* ssh -N -D 127.0.0.1:8080 ubuntu@172.16.1.215    （外面的IP）
+* git config --global https.proxy "socks5://127.0.0.1:8080"
+* git config --global https.proxy "socks5://127.0.0.1:8080"
+* sdk文件夹中git clone nrf sdk，文件名为nrf
+* sdk文件夹下运行west update导入其他仓库
+
 # ssd1306_zephyr
 
 ## Overview 已经被我修改成ncs v2.4.1运行
