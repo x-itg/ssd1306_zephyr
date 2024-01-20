@@ -9,12 +9,12 @@
 * 使用nRF connect for Desktop下的ToolChain Manager下载工具链，使用VSCODE的Nordic插件下载SDK
 * 以下连不上github时：
 * ssh -N -D 127.0.0.1:8080 ubuntu@172.16.1.215    （外面的IP）
-* git config --global https.proxy "socks5://127.0.0.1:8080"
-* git config --global https.proxy "socks5://127.0.0.1:8080"
+* git config --global https.proxy "socks5://127.0.0.1:8080"  #和ssh配合的时候socks5代理
+* git config --global https.proxy "socks5://127.0.0.1:8080"  #和ssh配合的时候socks5代理
 * ```取消
-  git config --global --unset http.proxy
-  git config --global --unset https.proxy
-  git config --list
+  git config --global --unset http.proxy #清除git代理
+  git config --global --unset https.proxy #清除git代理
+  git config --list #列出配置
   ```
 * sdk文件夹中git clone nrf sdk，文件名改为nrf
 * sdk文件夹下运行west update导入其他仓库
