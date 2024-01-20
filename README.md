@@ -81,7 +81,7 @@ The display.c program is rather simple, in that it runs a loop which writes out 
 
 ## JLink RTT Output
 
-If you have RTT enabled and the RTT client running, then you should see the following output.
+可以在nordic vscode的插件中 Actions下面的nRF Kconfig GUI下面开启Use RTT console选项保存到工程，这样就能用jlink rtt viewer查看printk输出的调试信息了。If you have RTT enabled and the RTT client running, then you should see the following output.
 
 ```
     *** Booting Zephyr OS build zephyr-v2.1.0-581-g4e135d76a3c2  ***
