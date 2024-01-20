@@ -24,6 +24,11 @@ LOG_MODULE_REGISTER(main, 3);
 
 #define LED0_NODE DT_ALIAS(led0)
 #define LED1_NODE DT_ALIAS(led1)
+#define LED2_NODE DT_ALIAS(led2)
+#define LED3_NODE DT_ALIAS(led3)
+#define LED4_NODE DT_ALIAS(led4)
+#define LED5_NODE DT_ALIAS(led5)
+#define SW0_NODE  DT_ALIAS(sw0)//别名
 
 #if !DT_NODE_HAS_STATUS(LED0_NODE, okay)
 #error "Unsupported board: led0 devicetree alias is not defined"
@@ -44,7 +49,7 @@ K_FIFO_DEFINE(printk_fifo);
 
 struct led
 {
-    struct gpio_dt_spec spec;
+    struct gpio_dt_spec spec;//gpio设备的专有
     uint8_t num;
 };
 
@@ -57,7 +62,32 @@ static const struct led led1 = {
     .spec = GPIO_DT_SPEC_GET_OR(LED1_NODE, gpios, {0}),
     .num = 1,
 };
+static const struct led led2 = {
+    .spec = GPIO_DT_SPEC_GET_OR(LED2_NODE, gpios, {0}),
+    .num = 2,
+};
 
+static const struct led led3 = {
+    .spec = GPIO_DT_SPEC_GET_OR(LED3_NODE, gpios, {0}),
+    .num = 3,
+};
+
+static const struct led led4 = {
+    .spec = GPIO_DT_SPEC_GET_OR(LED4_NODE, gpios, {0}),
+    .num = 4,
+};
+
+static const struct led led5 = {
+    .spec = GPIO_DT_SPEC_GET_OR(LED5_NODE, gpios, {0}),
+    .num = 5,
+};
+static struct gpio_dt_spec keyled = GPIO_DT_SPEC_GET_OR(DT_ALIAS(led2), gpios,{0});
+static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET_OR(SW0_NODE, gpios,{0});
+static struct gpio_callback button_cb_data;
+void button_pressed(const struct device *dev, struct gpio_callback *cb,uint32_t pins)
+{
+	printk("Button pressed at %" PRIu32 "\n", k_cycle_get_32());
+}
 void blink(const struct led *led, uint32_t sleep_ms, uint32_t id)
 {
     const struct gpio_dt_spec *spec = &led->spec;
@@ -119,6 +149,66 @@ void uart_out(void)
         k_free(rx_data);
     }
 }
+
+void keyread(void)
+{
+    int ret;
+
+	if (!gpio_is_ready_dt(&button)) {
+		printk("Error: button device %s is not ready\n",
+		       button.port->name);
+		return 0;
+	}
+
+	ret = gpio_pin_configure_dt(&button, GPIO_INPUT);
+	if (ret != 0) {
+		printk("Error %d: failed to configure %s pin %d\n",
+		       ret, button.port->name, button.pin);
+		return 0;
+	}
+
+	ret = gpio_pin_interrupt_configure_dt(&button,GPIO_INT_EDGE_TO_ACTIVE);
+
+	if (ret != 0) {
+		printk("Error %d: failed to configure interrupt on %s pin %d\n",
+			ret, button.port->name, button.pin);
+		return 0;
+	}
+
+	gpio_init_callback(&button_cb_data, button_pressed, BIT(button.pin));
+	gpio_add_callback(button.port, &button_cb_data);
+	printk("Set up button at %s pin %d\n", button.port->name, button.pin);
+
+	if (keyled.port && !gpio_is_ready_dt(&keyled)) {
+		printk("Error %d: LED device %s is not ready; ignoring it\n",
+		       ret, keyled.port->name);
+		keyled.port = NULL;
+	}
+	if (keyled.port) {
+		ret = gpio_pin_configure_dt(&keyled, GPIO_OUTPUT);
+		if (ret != 0) {
+			printk("Error %d: failed to configure LED device %s pin %d\n",
+			       ret, keyled.port->name, keyled.pin);
+			keyled.port = NULL;
+		} else {
+			printk("Set up LED at %s pin %d\n", keyled.port->name, keyled.pin);
+		}
+	}
+
+	printk("Press the button\n");
+	if (keyled.port) {
+		while (1) {
+			/* If we have an LED, match its state to the button's. */
+			int val = gpio_pin_get_dt(&button);
+
+			if (val >= 0) {
+				gpio_pin_set_dt(&keyled, val);
+			}
+			k_msleep(1);
+		}
+	}
+	return 0;
+}
 // main任务 天然有的任务 不用K_THREAD_DEFINE创建
 int main(void)
 {
@@ -128,6 +218,7 @@ int main(void)
 
     display_play();
 }
+
 // 灯0闪 任务 闪后发出消息
 K_THREAD_DEFINE(blink0_id, STACKSIZE, blink0, NULL, NULL, NULL,
                 PRIORITY, 0, 0);
@@ -138,4 +229,7 @@ K_THREAD_DEFINE(blink1_id, STACKSIZE, blink1, NULL, NULL, NULL,
 
 // 消息接收并打印任务，消息发出一定要及时消化掉 不然会死机
 K_THREAD_DEFINE(uart_out_id, STACKSIZE, uart_out, NULL, NULL, NULL,
+                PRIORITY, 0, 0);
+
+K_THREAD_DEFINE(keyread_id, STACKSIZE, keyread, NULL, NULL, NULL,
                 PRIORITY, 0, 0);

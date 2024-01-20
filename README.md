@@ -1,3 +1,7 @@
+### 基本情况
+
+[硬件用的这块开发板NRF52832DK硬件设计手册 ](http://doc.iotxx.com/NRF52832DK%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%89%8B%E5%86%8C) ，此工程是Nordic最新NCS编程包下的一个外设综合demo集合了按键 灯 OLED 任务等，作为NCS的学习笔记。
+
 ### 工具链和SDK
 
 * 使用nRF connect for Desktop下的ToolChain Manager下载工具链，使用VSCODE的Nordic插件下载SDK
