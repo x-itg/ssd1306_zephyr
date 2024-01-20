@@ -20,6 +20,7 @@
 * sdk文件夹下运行west update导入其他仓库
 * west update不成功时可以把github上的仓库导入到gitee上，git clone gitee上的仓库到本地，切换到想要的版本分支后，拷贝到sdk对应目录中去。再次west update就应该能成功了。
 * 当切换toolchain和sdk版本后需要重新添加build
+* VSCODE Nordic插件中点击ToolChain选择Open Terminal Profile打开nRF Connect终端输入west build是编译 输入west flash是下载，也可以直接点击VSCODE Nordic插件中ACTIONS下面的build和Flash按钮进行操作。
 
 # ssd1306_zephyr
 
