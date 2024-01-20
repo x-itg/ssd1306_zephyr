@@ -11,6 +11,7 @@
 * sdk文件夹中git clone nrf sdk，文件名为nrf
 * sdk文件夹下运行west update导入其他仓库
 * west update不成功时可以把github上的仓库导入到gitee上，git clone gitee上的仓库到本地，切换到想要的版本分支后，拷贝到sdk对应目录中去。再次west update就应该能成功了。
+* 当切换toolchain和sdk版本后需要重新添加build
 
 # ssd1306_zephyr
 
