@@ -1,5 +1,7 @@
-### 访问Github的办法
+### 工具链和SDK
 
+* 使用nRF connect for Desktop下的ToolChain Manager下载工具链，使用VSCODE的Nordic插件下载SDK
+* 以下连不上github时：
 * ssh -N -D 127.0.0.1:8080 ubuntu@172.16.1.215    （外面的IP）
 * git config --global https.proxy "socks5://127.0.0.1:8080"
 * git config --global https.proxy "socks5://127.0.0.1:8080"
@@ -8,7 +10,7 @@
   git config --global --unset https.proxy
   git config --list
   ```
-* sdk文件夹中git clone nrf sdk，文件名为nrf
+* sdk文件夹中git clone nrf sdk，文件名改为nrf
 * sdk文件夹下运行west update导入其他仓库
 * west update不成功时可以把github上的仓库导入到gitee上，git clone gitee上的仓库到本地，切换到想要的版本分支后，拷贝到sdk对应目录中去。再次west update就应该能成功了。
 * 当切换toolchain和sdk版本后需要重新添加build
